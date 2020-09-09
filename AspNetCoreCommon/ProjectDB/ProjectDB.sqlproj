@@ -56,5 +56,32 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="Scripts" />
+    <Folder Include="dbo\Stored Procedures\Client" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Client.sql" />
+    <Build Include="dbo\Tables\Task.sql" />
+    <Build Include="dbo\Tables\Invoice.sql" />
+    <Build Include="dbo\Tables\Pricing.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_All.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_GetByHouse.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_New.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_UpdateStatus.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_UpdateProject.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ProjectDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ProjectDB.publish.xml" />
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ Post-Deployment Script Template
 
 if not exists (select * from dbo.Client)
 begin
-    insert into dbo.Client(HouseNum, Street, City, [State], Cost, [Status])
-    values (2902, 'NE 145th Ave.', 'Vancouver', 'WA', 10,000.00, 'Not Started'),
-    (1212, 'Downtown', 'Vancouver', 'WA', 12,000.00, 'Started');
+    insert into dbo.Client(FirstName, LastName, PhoneNumber, Email, HouseNum, Street, City, [State], Cost, [Status], ContractorID)
+    values ('Tam', 'Nguyen', '3609779642', '123@yahoo.com', '2902', 'NE 145th Ave.', 'Vancouver', 'WA', 10000, 'Not Started', 1),
+    ('Yajaira', 'Nguyen', '3603602334', 'qwe@yahoo.com', '1212', 'Downtown', 'Vancouver', 'WA', 12000, 'Started', 1);
 end

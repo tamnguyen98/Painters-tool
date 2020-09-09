@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spClient_GetByHouse]
-	@HouseNum int,
+	@HouseNum nvarchar(10),
 	@Street nvarchar(50) = null
 AS
 IF @Street IS NULL
