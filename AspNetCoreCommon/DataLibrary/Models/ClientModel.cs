@@ -27,8 +27,8 @@ namespace DataLibrary.Models
         [MinLength(2, ErrorMessage = "A status is required.")]
         public string Status { get; set; }
         public int ETA { get; set; }
-        public SqlDateTime StartDate { get; set; }
-        public SqlDateTime CompleteDate { get; set; }
+        public SqlDateTime? StartDate { get; set; }
+        public SqlDateTime? CompleteDate { get; set; }
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "A contractor ID is required.")]
         public int ContractorID { get; set; }

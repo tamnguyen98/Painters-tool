@@ -27,7 +27,7 @@ namespace CommonCoreAPI.Controllers
         public async Task<IActionResult> Post(ClientModel client)
         {
             int id = await _clientData.NewClient(client);
-            return Ok(client);
+            return Ok(id);
         }
 
         [HttpGet("byHouse")]
