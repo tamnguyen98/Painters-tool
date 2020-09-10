@@ -12,5 +12,5 @@ ELSE
 BEGIN
 	SELECT *
 	FROM dbo.Client
-	WHERE HouseNum = @HouseNum AND Street = @Street;
+	WHERE HouseNum = @HouseNum AND Street LIKE @Street;
 END

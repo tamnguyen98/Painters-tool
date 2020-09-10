@@ -1,6 +1,7 @@
 ﻿using DataLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Threading.Tasks;
 
 namespace DataLibrary.Data
@@ -14,6 +15,6 @@ namespace DataLibrary.Data
         Task<ClientModel> GetProjectById(int id);
         Task<int> NewClient(ClientModel client);
         Task<int> UpdateProject(int clientId, decimal cost, string fName, string lName, string email, string phone, string houseNum, string street, string city, string state);
-        Task<int> UpdateProjectStatus(int clientId, string status, int eta, DateTime startTime, DateTime completeTime);
+        Task<int> UpdateProjectStatus(int clientId, string status, int eta, SqlDateTime startTime, SqlDateTime completeTime);
     }
 }

@@ -4,6 +4,7 @@ using DataLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,21 @@ namespace DataLibrary.Data
             return _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_All",
                                                        new { },
                                                        _connectionString.SqlConnectionName);
+        }
+
+        private ClientModel trimValues(ClientModel c)
+        {
+            // Remove trailing (and leading) spaces from the element
+            c.FirstName = c.FirstName.Trim();
+            c.LastName = c.LastName.Trim();
+            c.Email = c.Email.Trim();
+            c.PhoneNumber = c.Email.Trim();
+            c.HouseNum = c.HouseNum.Trim();
+            c.Street = c.Street.Trim();
+            c.State = c.State.Trim();
+            c.City = c.City.Trim();
+            c.Status = c.Status.Trim();
+            return c;
         }
 
         public async Task<int> NewClient(ClientModel client)
@@ -55,7 +71,7 @@ namespace DataLibrary.Data
             return p.Get<int>("Id");
         }
 
-        public Task<int> UpdateProjectStatus(int clientId, string status, int eta, DateTime startTime, DateTime completeTime)
+        public Task<int> UpdateProjectStatus(int clientId, string status, int eta, SqlDateTime startTime, SqlDateTime completeTime)
         {
             // Only Status and ID can not be null
             var p = new
@@ -91,7 +107,7 @@ namespace DataLibrary.Data
 
         public async Task<ClientModel> GetProjectById(int id)
         {
-            var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spOrders_GetById",
+            var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetById",
                                                                             new { Id = id },
                                                                             _connectionString.SqlConnectionName);
             return records.FirstOrDefault();
@@ -100,10 +116,10 @@ namespace DataLibrary.Data
         public async Task<ClientModel> GetProjectByHouse(string house, string street)
         {
             var p = new { HouseNum = house, Street = street };
-            var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spOrders_GetByHouse",
+            var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetByHouse",
                                                                             p,
                                                                             _connectionString.SqlConnectionName);
-            return records.FirstOrDefault();
+            return trimValues(records.FirstOrDefault());
         }
 
         public async Task<List<ClientModel>> GetContractorProjects(int contractorID)
