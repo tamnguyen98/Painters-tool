@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommonCoreAPI.Models;
 using DataLibrary.Data;
 using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +21,7 @@ namespace CommonCoreAPI.Controllers
             _clientData = clientData;
         }
 
-        [HttpPost("newProject")]
+        [HttpPost("NewProject")]
         [ValidateModel]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -30,22 +31,75 @@ namespace CommonCoreAPI.Controllers
             return Ok(id);
         }
 
-        [HttpGet("byHouse")]
+        [HttpGet("FindProject")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // [controller]/byHouse?house=[house]&street=[street]
-        public async Task<IActionResult> Get(string house, string? street)
+        public async Task<IActionResult> Get(int? projectId, string house, string street)
         {
-            if (house.Length <= 1)
+            if (projectId != null)
+            {
+                var project = await _clientData.GetProjectById(projectId ?? default(int));
+
+                if (project == null)
+                    return NotFound();
+
+                return Ok(project);
+            }
+            else if (house != null)
+            {
+                if (house.Length < 2)
+                    return BadRequest();
+
+                var project = await _clientData.GetProjectByHouse(house, street);
+
+                if (project == null)
+                    return NotFound();
+
+                return Ok(project);
+            }
+            else
+            {
                 return BadRequest();
+            }
+        }
 
-            var project = await _clientData.GetProjectByHouse(house, street);
+        [HttpDelete("Delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        // /Delete?projectId=[id]
+        public async Task<IActionResult> Delete(int projectId)
+        {
+            await _clientData.DeleteProjectRecord(projectId);
 
-            if (project == null)
-                return NotFound();
+            return Ok();
+        }
 
-            return Ok(project);
+        [HttpPut("Update")]
+        [ValidateModel]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody]ClientUpdateModel data)
+        {
+            var record = await _clientData.GetProjectByHouse(data.HouseNum, data.Street); // Should replace when query by ID is fix
+            if (record == null)
+                BadRequest();
+            await _clientData.UpdateProject(data.Id,
+                                            data.Cost,
+                                            data.FirstName,
+                                            data.LastName,
+                                            data.Email,
+                                            data.PhoneNumber,
+                                            data.HouseNum,
+                                            data.Street,
+                                            data.City,
+                                            data.State,
+                                            data.Status,
+                                            data.ETA,
+                                            data.StartDate,
+                                            data.CompleteDate);
+            return Ok();
         }
     }
 }

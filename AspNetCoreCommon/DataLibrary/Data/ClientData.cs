@@ -90,7 +90,20 @@ namespace DataLibrary.Data
             return _dataAccess.SaveData("dbo.spClient_Update", p, _connectionString.SqlConnectionName);
         }
 
-        public Task<int> UpdateProject(int clientId, decimal cost, string fName, string lName, string email, string phone, string houseNum, string street, string city, string state)
+        public Task<int> UpdateProject(int clientId,
+                                       decimal? cost,
+                                       string fName,
+                                       string lName,
+                                       string email,
+                                       string phone,
+                                       string houseNum,
+                                       string street,
+                                       string city,
+                                       string state,
+                                       string status,
+                                       int? eta,
+                                       DateTime? startTime,
+                                       DateTime? completeTime)
         {
             var p = new
             {
@@ -103,7 +116,11 @@ namespace DataLibrary.Data
                 HouseNum = houseNum,
                 Street = street,
                 City = city,
-                State = state
+                State = state,
+                Status = status,
+                ETA = eta,
+                StartDate = startTime,
+                CompleteDate = completeTime
             };
             return _dataAccess.SaveData("spClient_UpdateProject",
                                         p,
@@ -112,13 +129,14 @@ namespace DataLibrary.Data
 
         public async Task<ClientModel> GetProjectById(int id)
         {
+            var p = new { Id = id };
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetById",
-                                                                            new { Id = id },
+                                                                            p,
                                                                             _connectionString.SqlConnectionName);
             return records.FirstOrDefault();
         }
 
-        public async Task<ClientModel> GetProjectByHouse(string house, string? street)
+        public async Task<ClientModel> GetProjectByHouse(string house, string street)
         {
             var p = new { HouseNum = house, Street = street };
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetByHouse",
