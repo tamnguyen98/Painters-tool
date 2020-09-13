@@ -40,7 +40,7 @@ namespace CommonCoreAPI.Controllers
         {
             if (projectId != null)
             {
-                var project = await _clientData.GetProjectById(projectId ?? default(int));
+                var project = await _clientData.GetProjectById((int) projectId);
 
                 if (project == null)
                     return NotFound();
@@ -82,7 +82,9 @@ namespace CommonCoreAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put([FromBody]ClientUpdateModel data)
         {
-            var record = await _clientData.GetProjectByHouse(data.HouseNum, data.Street); // Should replace when query by ID is fix
+            Console.WriteLine(data.HouseNum + " " + data.Street);
+            //var record = await _clientData.GetProjectByHouse(data.HouseNum, data.Street); // Should replace when query by ID is fix
+            var record = await _clientData.GetProjectById(data.Id); // Should replace when query by ID is fix
             if (record == null)
                 BadRequest();
             await _clientData.UpdateProject(data.Id,

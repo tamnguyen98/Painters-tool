@@ -31,22 +31,22 @@ namespace DataLibrary.Data
                                                        _connectionString.SqlConnectionName);
         }
 
-        private ClientModel trimValues(ClientModel c)
+        private ClientModel TrimStringValues(ClientModel c)
         {
             // Remove trailing (and leading) spaces from the element
-            c.FirstName = c.FirstName.Trim();
-            c.LastName = c.LastName.Trim();
-            c.PhoneNumber = c.PhoneNumber.Trim();
-            c.HouseNum = c.HouseNum.Trim();
-            c.Street = c.Street.Trim();
-            c.Status = c.Status.Trim();
+                c.FirstName = c.FirstName.Trim();
+                c.LastName = c.LastName.Trim();
+                c.PhoneNumber = c.PhoneNumber.Trim();
+                c.HouseNum = c.HouseNum.Trim();
+                c.Street = c.Street.Trim();
+                c.Status = c.Status.Trim();
 
             // Nullable string values
-            if (c.Email != null || !DBNull.Value.Equals(c.Email))
+            if (c.Email != null)
                 c.Email = c.Email.Trim();
-            if (c.State != null || !DBNull.Value.Equals(c.State))
+            if (c.State != null)
                 c.State = c.State.Trim();
-            if (c.City != null || !DBNull.Value.Equals(c.City))
+            if (c.City != null)
                 c.City = c.City.Trim();
             return c;
         }
@@ -133,7 +133,7 @@ namespace DataLibrary.Data
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetById",
                                                                             p,
                                                                             _connectionString.SqlConnectionName);
-            return records.FirstOrDefault();
+            return TrimStringValues(records.FirstOrDefault());
         }
 
         public async Task<ClientModel> GetProjectByHouse(string house, string street)
@@ -142,7 +142,7 @@ namespace DataLibrary.Data
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetByHouse",
                                                                             p,
                                                                             _connectionString.SqlConnectionName);
-            return trimValues(records.FirstOrDefault());
+            return TrimStringValues(records.FirstOrDefault());
             //return records.FirstOrDefault();
         }
 
