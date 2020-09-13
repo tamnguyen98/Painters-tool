@@ -34,12 +34,12 @@ namespace DataLibrary.Data
         private ClientModel TrimStringValues(ClientModel c)
         {
             // Remove trailing (and leading) spaces from the element
-                c.FirstName = c.FirstName.Trim();
-                c.LastName = c.LastName.Trim();
-                c.PhoneNumber = c.PhoneNumber.Trim();
-                c.HouseNum = c.HouseNum.Trim();
-                c.Street = c.Street.Trim();
-                c.Status = c.Status.Trim();
+            c.FirstName = c.FirstName.Trim();
+            c.LastName = c.LastName.Trim();
+            c.PhoneNumber = c.PhoneNumber.Trim();
+            c.HouseNum = c.HouseNum.Trim();
+            c.Street = c.Street.Trim();
+            c.Status = c.Status.Trim();
 
             // Nullable string values
             if (c.Email != null)
@@ -90,37 +90,24 @@ namespace DataLibrary.Data
             return _dataAccess.SaveData("dbo.spClient_Update", p, _connectionString.SqlConnectionName);
         }
 
-        public Task<int> UpdateProject(int clientId,
-                                       decimal? cost,
-                                       string fName,
-                                       string lName,
-                                       string email,
-                                       string phone,
-                                       string houseNum,
-                                       string street,
-                                       string city,
-                                       string state,
-                                       string status,
-                                       int? eta,
-                                       DateTime? startTime,
-                                       DateTime? completeTime)
+        public Task<int> UpdateProject(ClientModel c)
         {
             var p = new
             {
-                Id = clientId,
-                FirstName = fName,
-                LastName = lName,
-                Email = email,
-                PhoneNumber = phone,
-                Cost = cost,
-                HouseNum = houseNum,
-                Street = street,
-                City = city,
-                State = state,
-                Status = status,
-                ETA = eta,
-                StartDate = startTime,
-                CompleteDate = completeTime
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Email = c.Email,
+                PhoneNumber = c.PhoneNumber,
+                Cost = c.Cost,
+                HouseNum = c.HouseNum,
+                Street = c.Street,
+                City = c.City,
+                State = c.State,
+                Status = c.Status,
+                ETA = c.ETA,
+                StartDate = c.StartDate,
+                CompleteDate = c.CompleteDate
             };
             return _dataAccess.SaveData("spClient_UpdateProject",
                                         p,

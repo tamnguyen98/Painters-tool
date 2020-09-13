@@ -80,27 +80,14 @@ namespace CommonCoreAPI.Controllers
         [ValidateModel]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody]ClientUpdateModel data)
+        public async Task<IActionResult> Put([FromBody]ClientModel data)
         {
             Console.WriteLine(data.HouseNum + " " + data.Street);
             //var record = await _clientData.GetProjectByHouse(data.HouseNum, data.Street); // Should replace when query by ID is fix
             var record = await _clientData.GetProjectById(data.Id); // Should replace when query by ID is fix
             if (record == null)
                 BadRequest();
-            await _clientData.UpdateProject(data.Id,
-                                            data.Cost,
-                                            data.FirstName,
-                                            data.LastName,
-                                            data.Email,
-                                            data.PhoneNumber,
-                                            data.HouseNum,
-                                            data.Street,
-                                            data.City,
-                                            data.State,
-                                            data.Status,
-                                            data.ETA,
-                                            data.StartDate,
-                                            data.CompleteDate);
+            await _clientData.UpdateProject(data);
             return Ok();
         }
     }
