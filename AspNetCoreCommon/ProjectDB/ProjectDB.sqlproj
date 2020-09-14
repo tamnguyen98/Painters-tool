@@ -75,6 +75,7 @@
     <Build Include="dbo\Stored Procedures\Client\spClient_Delete.sql" />
     <Build Include="dbo\Stored Procedures\Client\spClient_UpdateProject.sql" />
     <Build Include="dbo\Stored Procedures\Client\spClient_ClientByContractor.sql" />
+    <Build Include="dbo\Stored Procedures\Client\spClient_GetProjectStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />

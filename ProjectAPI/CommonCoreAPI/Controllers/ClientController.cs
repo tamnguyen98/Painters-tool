@@ -65,6 +65,20 @@ namespace CommonCoreAPI.Controllers
             }
         }
 
+        [HttpGet("CheckStatus")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Get(int projectId)
+        {
+            if (projectId < 1)
+                return BadRequest();
+            var p = await _clientData.GetProjectStatus(projectId);
+            if (p == null)
+                return NotFound();
+            return Ok(p);
+        }
+
         [HttpDelete("Delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -80,15 +94,30 @@ namespace CommonCoreAPI.Controllers
         [ValidateModel]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        // To get the json format, perform a get
         public async Task<IActionResult> Put([FromBody]ClientModel data)
         {
             Console.WriteLine(data.HouseNum + " " + data.Street);
             //var record = await _clientData.GetProjectByHouse(data.HouseNum, data.Street); // Should replace when query by ID is fix
             var record = await _clientData.GetProjectById(data.Id); // Should replace when query by ID is fix
             if (record == null)
-                BadRequest();
+                return BadRequest();
             await _clientData.UpdateProject(data);
             return Ok();
         }
+
+        [HttpPut("UpdateStatus")]
+        [ValidateModel]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] ProjectStatusModel data)
+        {
+            var p = _clientData.GetProjectStatus(data.Id);
+            if (p == null)
+                return BadRequest();
+            await _clientData.UpdateProjectStatus(data);
+            return Ok();
+        }
+
     }
 }

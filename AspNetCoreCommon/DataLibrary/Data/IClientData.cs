@@ -13,8 +13,9 @@ namespace DataLibrary.Data
         Task<List<ClientModel>> GetContractorProjects(int contractorID);
         Task<ClientModel> GetProjectByHouse(string house, string street);
         Task<ClientModel> GetProjectById(int id);
+        Task<ProjectStatusModel> GetProjectStatus(int id);
         Task<int> NewClient(ClientModel client);
         public Task<int> UpdateProject(ClientModel c);
-        Task<int> UpdateProjectStatus(int clientId, string status, int eta, SqlDateTime startTime, SqlDateTime completeTime);
+        Task<int> UpdateProjectStatus(ProjectStatusModel data);
     }
 }

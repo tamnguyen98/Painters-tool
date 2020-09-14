@@ -51,6 +51,13 @@ namespace DataLibrary.Data
             return c;
         }
 
+        private string TrimStringValue(string s)
+        {
+            if (s == null)
+                return s;
+            return s.Trim();
+        }
+
         public async Task<int> NewClient(ClientModel client)
         {
             DynamicParameters p = new DynamicParameters();
@@ -76,41 +83,16 @@ namespace DataLibrary.Data
             return p.Get<int>("Id");
         }
 
-        public Task<int> UpdateProjectStatus(int clientId, string status, int eta, SqlDateTime startTime, SqlDateTime completeTime)
+        public Task<int> UpdateProjectStatus(ProjectStatusModel data)
         {
             // Only Status and ID can not be null
-            var p = new
-            {
-                Id = clientId,
-                Status = status,
-                ETA = eta,
-                StartDate = startTime,
-                CompleteDate = completeTime
-            };
-            return _dataAccess.SaveData("dbo.spClient_Update", p, _connectionString.SqlConnectionName);
+            return _dataAccess.SaveData("dbo.spClient_UpdateStatus", data, _connectionString.SqlConnectionName);
         }
 
         public Task<int> UpdateProject(ClientModel c)
         {
-            var p = new
-            {
-                Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName,
-                Email = c.Email,
-                PhoneNumber = c.PhoneNumber,
-                Cost = c.Cost,
-                HouseNum = c.HouseNum,
-                Street = c.Street,
-                City = c.City,
-                State = c.State,
-                Status = c.Status,
-                ETA = c.ETA,
-                StartDate = c.StartDate,
-                CompleteDate = c.CompleteDate
-            };
             return _dataAccess.SaveData("spClient_UpdateProject",
-                                        p,
+                                        c,
                                         _connectionString.SqlConnectionName);
         }
 
@@ -131,6 +113,16 @@ namespace DataLibrary.Data
                                                                             _connectionString.SqlConnectionName);
             return TrimStringValues(records.FirstOrDefault());
             //return records.FirstOrDefault();
+        }
+
+        public async Task<ProjectStatusModel> GetProjectStatus(int id)
+        {
+            var records = await _dataAccess.LoadData<ProjectStatusModel, dynamic>("dbo.spClient_GetProjectStatus",
+                                                                                  new { Id = id },
+                                                                                  _connectionString.SqlConnectionName);
+            var hit = records.FirstOrDefault();
+            hit.Status = TrimStringValue(hit.Status);
+            return hit;
         }
 
         public async Task<List<ClientModel>> GetContractorProjects(int contractorID)

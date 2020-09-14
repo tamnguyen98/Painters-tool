@@ -12,7 +12,8 @@
 	@Status varchar(30),
 	@ETA int = null,
 	@StartDate date = null,
-	@CompleteDate date = null
+	@CompleteDate date = null,
+	@ContractorID int = null /* Empty field. Using so I can reuse the model */
 AS
 BEGIN
 	set nocount on;
