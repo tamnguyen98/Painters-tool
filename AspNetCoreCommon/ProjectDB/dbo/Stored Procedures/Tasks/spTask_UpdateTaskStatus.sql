@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spTask_CompleteTask]
+﻿CREATE PROCEDURE [dbo].[spTask_UpdateTaskStatus]
 	@Id int,
 	@Complete bit
 AS

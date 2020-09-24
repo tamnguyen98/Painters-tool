@@ -61,6 +61,7 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="Scripts" />
     <Folder Include="dbo\Stored Procedures\Client" />
+    <Folder Include="dbo\Stored Procedures\Tasks" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Client.sql" />
@@ -76,6 +77,12 @@
     <Build Include="dbo\Stored Procedures\Client\spClient_UpdateProject.sql" />
     <Build Include="dbo\Stored Procedures\Client\spClient_ClientByContractor.sql" />
     <Build Include="dbo\Stored Procedures\Client\spClient_GetProjectStatus.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_All.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_GetUnfinished.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_UpdateTaskStatus.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_AddTask.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_EditTask.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />
