@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Data
 {
-    interface ITaskData
+    public interface ITaskData
     {
         Task<int> DeleteTask(int id);
         Task<int> EditTask(int id, string task, string description);

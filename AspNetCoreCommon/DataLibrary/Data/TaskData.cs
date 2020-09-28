@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Data
 {
-    class TaskData : ITaskData
+    public class TaskData : ITaskData
     {
-        private IDataAccess _dataAccess;
+        private readonly IDataAccess _dataAccess;
         private readonly ConnectionStringData _connectionString;
 
         public TaskData(IDataAccess dataAccess, ConnectionStringData connectionString)
