@@ -8,6 +8,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataLibrary.CustomMethods;
 
 namespace DataLibrary.Data
 {
@@ -29,33 +30,6 @@ namespace DataLibrary.Data
             return _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_All",
                                                        new { },
                                                        _connectionString.SqlConnectionName);
-        }
-
-        private ClientModel TrimStringValues(ClientModel c)
-        {
-            // Remove trailing (and leading) spaces from the element
-            c.FirstName = c.FirstName.Trim();
-            c.LastName = c.LastName.Trim();
-            c.PhoneNumber = c.PhoneNumber.Trim();
-            c.HouseNum = c.HouseNum.Trim();
-            c.Street = c.Street.Trim();
-            c.Status = c.Status.Trim();
-
-            // Nullable string values
-            if (c.Email != null)
-                c.Email = c.Email.Trim();
-            if (c.State != null)
-                c.State = c.State.Trim();
-            if (c.City != null)
-                c.City = c.City.Trim();
-            return c;
-        }
-
-        private string TrimStringValue(string s)
-        {
-            if (s == null)
-                return s;
-            return s.Trim();
         }
 
         public async Task<int> NewClient(ClientModel client)
@@ -102,7 +76,7 @@ namespace DataLibrary.Data
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetById",
                                                                             p,
                                                                             _connectionString.SqlConnectionName);
-            return TrimStringValues(records.FirstOrDefault());
+            return ReturnData.TrimClientModelStringValues(records.FirstOrDefault());
         }
 
         public async Task<ClientModel> GetProjectByHouse(string house, string street)
@@ -111,7 +85,7 @@ namespace DataLibrary.Data
             var records = await _dataAccess.LoadData<ClientModel, dynamic>("dbo.spClient_GetByHouse",
                                                                             p,
                                                                             _connectionString.SqlConnectionName);
-            return TrimStringValues(records.FirstOrDefault());
+            return ReturnData.TrimClientModelStringValues(records.FirstOrDefault());
             //return records.FirstOrDefault();
         }
 
@@ -121,7 +95,7 @@ namespace DataLibrary.Data
                                                                                   new { Id = id },
                                                                                   _connectionString.SqlConnectionName);
             var hit = records.FirstOrDefault();
-            hit.Status = TrimStringValue(hit.Status);
+            hit.Status = ReturnData.TrimStringValue(hit.Status);
             return hit;
         }
 

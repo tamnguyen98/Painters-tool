@@ -28,6 +28,7 @@ namespace TaskAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSingleton(new ConnectionStringData
             {
                 SqlConnectionName = "Default"

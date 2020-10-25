@@ -7,6 +7,9 @@ using DataLibrary.Data;
 using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CommonCoreAPI.Controllers;
+using CommonCoreAPI.Models;
+using TaskAPI.Models;
 
 namespace TaskAPI.Controllers
 {
@@ -19,6 +22,13 @@ namespace TaskAPI.Controllers
         public TasksController(ITaskData taskData)
         {
             _taskData = taskData;
+        }
+        // For test, delete at final
+        [HttpGet("every")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<List<TaskModel>> Get()
+        {
+            return await _taskData.GetEveryTask();
         }
 
         [HttpGet("All")]
@@ -38,7 +48,7 @@ namespace TaskAPI.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("Complete")]
+        [HttpDelete("Delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int task)
@@ -65,26 +75,15 @@ namespace TaskAPI.Controllers
             return await _taskData.GetProjectUnfishedTasks(projectId);
         }
 
-        [HttpPatch("Complete/{id}")]
+        [HttpPatch("SetStatus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CompleteTask(int id, [FromBody]bool isComplete)
+        public async Task<IActionResult> CompleteTask([FromBody] TaskStatusModel t)
         {
-            int result = await _taskData.UpdateTask(id, isComplete);
+            int result = await _taskData.UpdateTask(t.id, t.isComplete);
             if (result < 0)
                 return BadRequest(); // To Test without
-            return Ok(result);
-        }
-
-        [HttpPatch("Undo/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UndoTask(int id, [FromBody] bool isComplete)
-        {
-            int result = await _taskData.UpdateTask(id, isComplete);
-            if (result < 0)
-                return BadRequest(); // To Test without
-            return Ok(result);
+            return Ok(1);
         }
     }
 }

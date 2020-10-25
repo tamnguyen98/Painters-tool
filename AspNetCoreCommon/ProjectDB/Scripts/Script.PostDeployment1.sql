@@ -16,3 +16,10 @@ begin
     values ('Tam', 'Nguyen', '3609779642', '123@yahoo.com', '2902', 'NE 145th Ave.', 'Vancouver', 'WA', 10000, 'Not Started', 1),
     ('Yajaira', 'Nguyen', '3603602334', 'qwe@yahoo.com', '1212', 'Downtown', 'Vancouver', 'WA', 12000, 'Started', 1);
 end
+if not exists (select * from dbo.Task)
+begin
+    SET IDENTITY_INSERT dbo.[Task] ON;
+	SET NOCOUNT ON;
+	INSERT INTO dbo.[Task](Id, ClientID, Task, [Description],Complete)
+	VALUES (0, 1, 'task 1', 'task 2', 0);
+end

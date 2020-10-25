@@ -8,8 +8,8 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	INSERT INTO dbo.[Task](Id, ClientID, Task, [Description],Complete, ETA)
-	VALUES (@ClientID, @Task, @Description, @Complete, @ETA, @Id);
+	INSERT INTO dbo.[Task]( ClientID, Task, [Description],Complete, ETA)
+	VALUES ( @ClientID, @Task, @Description, @Complete, @ETA);
 
 	set @Id = SCOPE_IDENTITY();
 END

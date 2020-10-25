@@ -20,17 +20,24 @@ namespace DataLibrary.Data
             _connectionString = connectionString;
         }
 
+        public Task<List<TaskModel>> GetEveryTask()
+        {
+            return _dataAccess.LoadData<TaskModel, dynamic>("dbo.spTask_EveryTask",
+                                                              null,
+                                                              _connectionString.SqlConnectionName);
+        }
+
         public Task<List<TaskModel>> GetProjectTasks(int clientID)
         {
-            return _dataAccess.LoadData<TaskModel, dynamic>("dbo.All",
-                                                              new { Id = clientID },
+            return _dataAccess.LoadData<TaskModel, dynamic>("dbo.spTask_All",
+                                                              new { ProjectID = clientID },
                                                               _connectionString.SqlConnectionName);
         }
 
         public Task<List<TaskModel>> GetProjectUnfishedTasks(int clientID)
         {
-            return _dataAccess.LoadData<TaskModel, dynamic>("dbo.GetUnfished",
-                                                              new { Id = clientID },
+            return _dataAccess.LoadData<TaskModel, dynamic>("dbo.spTask_GetUnfinished",
+                                                              new { ProjectID = clientID },
                                                               _connectionString.SqlConnectionName);
         }
 
@@ -40,9 +47,12 @@ namespace DataLibrary.Data
             p.Add("@Id", DbType.Int32, direction: System.Data.ParameterDirection.Output);
             p.Add("@ClientID", t.ClientID);
             p.Add("@Task", t.Task);
-            p.Add("@Description", t.Description);
-            p.Add("@Complete", t.Complete);
-            p.Add("@ETA", t.ETA);
+            //if (t.Description != null)
+                p.Add("@Description", t.Description);
+            //if (t.Complete != null)
+                p.Add("@Complete", t.Complete);
+            //if (t.ETA != null)
+                p.Add("@ETA", t.ETA);
 
             await _dataAccess.SaveData("dbo.spTask_AddTask", p, _connectionString.SqlConnectionName);
 
@@ -51,21 +61,21 @@ namespace DataLibrary.Data
 
         public async Task<int> DeleteTask(int id)
         {
-            return await _dataAccess.SaveData("spTask_Delete",
+            return await _dataAccess.SaveData("dbo.spTask_Delete",
                                                new { Id = id },
                                                _connectionString.SqlConnectionName);
         }
 
         public Task<int> UpdateTask(int id, bool isComplete)
         {
-            return _dataAccess.SaveData("spTask_UpdateTaskStatus",
-                                        new { Id = id, Complete = isComplete },
+            return _dataAccess.SaveData("dbo.spTask_UpdateTaskStatus",
+                                        new { Id = id, Complete = Convert.ToInt16(isComplete) },
                                         _connectionString.SqlConnectionName);
         }
 
         public async Task<int> EditTask(int id, string task, string description)
         {
-            return await _dataAccess.SaveData("spTask_EditTask",
+            return await _dataAccess.SaveData("dbo.spTask_EditTask",
                                               new { Id = id, Task = task, Description = description },
                                               _connectionString.SqlConnectionName);
         }

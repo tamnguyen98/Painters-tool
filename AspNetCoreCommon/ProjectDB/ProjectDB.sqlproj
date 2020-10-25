@@ -83,6 +83,7 @@
     <Build Include="dbo\Stored Procedures\Tasks\spTask_AddTask.sql" />
     <Build Include="dbo\Stored Procedures\Tasks\spTask_EditTask.sql" />
     <Build Include="dbo\Stored Procedures\Tasks\spTask_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\Tasks\spTask_EveryTask.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />
